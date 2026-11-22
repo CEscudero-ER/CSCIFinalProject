@@ -5,49 +5,82 @@ using namespace std;
 
 void displayStats(string statList[5], double stats[5]);
 double inputStats(string statList[5], double stats[5]);
-double buffstats(string statList[5], double buff[6], double stats[5], int x);
+bool gameRunning = true;
+void buffstats2nd(string statCodeList[5], string statList[5],double buff[6], double stats[5], int x, string y);
 
 //main
 int main()
 {
-
     int x = 0;
+    string y;
+    string statCodeList[5] = { "atk", "def", "spd", "spatk", "spdef" };
     string statList[5] = { "Attack", "Defense", "Speed", "Special Attack", "Special Defense" };
     double stats[5];
     double buff[6] = { 0.5, 1.0, 1.5, 2.0, 2.5, 3 };
+    char choice;
+
     inputStats(statList, stats);
-    displayStats(statList, stats);
-    buffstats(statList, buff, stats, x);
-    displayStats(statList, stats);
+
+    while (gameRunning == true)
+    {
+        displayStats(statList, stats);
+        buffstats2nd(statCodeList, statList, buff, stats, x, y);
+        displayStats(statList, stats);
+
+        cout << "Do you want to continue? (Y/N): ";
+        cin >> choice;
+        while (choice != 'Y' && choice != 'N') {
+            cout << "Input is not valid! Enter a valid input. Do you want to continue ? (Y / N) : " << endl;
+            cin >> choice;
+        }
+        if (choice == 'N' || choice == 'n')
+        {
+            gameRunning = false;
+        }
+    }
+
     return 0;
 }
 
 //Functions
-double inputStats(string statList[5], double stats[5]) {
-    for (int i = 0; i < 5; i++) {
+double inputStats(string statList[5], double stats[5])
+{
+    for (int i = 0; i < 5; i++)
+    {
         cout << "Please enter value for " << statList[i] << ": ";
         cin >> stats[i];
     }
     return 0;
 }
 
-void displayStats(string statList[5], double stats[5]) {
-    for (int i = 0; i < 5; i++) {
+void displayStats(string statList[5], double stats[5])
+{
+    for (int i = 0; i < 5; i++)
+    {
         cout << statList[i] << ": " << stats[i] << endl;
     }
 }
 
-double buffstats(string statList[5], double buff[6], double stats[5], int x) {
-    for (int i = 0; i < 5; i++) {
-        cout << "How much do you want to buff " << statList[i] << " (0-6)? : ";
-        cin >> x;
-        while (x > 6 | x < 0) {
-            cout << "Value entered is invalid. Please try again with a valid value." << endl;
-            cin >> x;
-        }
-        stats[i] = stats[i] + stats[i] * buff[x];
+void buffstats2nd(string statCodeList[5], string statList[5],double buff[6], double stats[5], int x, string y) {
+    cout << "What stat do you want to buff?" << endl;
+    cin >> y;
+    while (y != "atk" && y != "def" && y != "spd" && y != "spatk" && y != "spdef") {
+        cout << "Input is not valid. Input a valid input." << endl;
+        cin >> y;
     }
-    return 0;
+    for (int i = 0; i < 5; i++) {
+        if (statCodeList[i] == y) {
+            cout << "The stat you want to change is " << statList[i] << endl;
+            cout << "How much do you want to buff " << statList[i] << " (1-6)? : ";
+            cin >> x;
+            while (x > 6 || x < 1)
+            {
+                cout << "Value entered is invalid. Please try again with a valid value." << endl;
+                cin >> x;
+            }
+            x = x - 1;
+            stats[i] = stats[i] + stats[i] * buff[x];
+        }
+
+    }
 }
-
-
