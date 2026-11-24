@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 //Prototypes
@@ -6,7 +7,8 @@ using namespace std;
 void displayStats(string statList[5], double stats[5]);
 double inputStats(string statList[5], double stats[5]);
 bool gameRunning = true;
-void buffstats2nd(string statCodeList[5], string statList[5],double buff[6], double stats[5], int x, string y);
+void buffstats2nd(string statCodeList[5], string statList[5], double buff[6], double stats[5], int x, string y);
+void saveStats(string statList[5], double stats[5]);
 
 //main
 int main()
@@ -38,7 +40,8 @@ int main()
             gameRunning = false;
         }
     }
-
+    saveStats(statList, stats);
+    
     return 0;
 }
 
@@ -61,7 +64,7 @@ void displayStats(string statList[5], double stats[5])
     }
 }
 
-void buffstats2nd(string statCodeList[5], string statList[5],double buff[6], double stats[5], int x, string y) {
+void buffstats2nd(string statCodeList[5], string statList[5], double buff[6], double stats[5], int x, string y) {
     cout << "What stat do you want to buff?" << endl;
     cin >> y;
     while (y != "atk" && y != "def" && y != "spd" && y != "spatk" && y != "spdef") {
@@ -83,4 +86,18 @@ void buffstats2nd(string statCodeList[5], string statList[5],double buff[6], dou
         }
 
     }
+}
+
+void saveStats(string statList[5], double stats[5]) {
+    ofstream outFile("PokemonStats.txt");
+    if (!outFile) {
+        cout << "Error opening file!" << endl;
+        return;
+    }
+    for (int i = 0; i < 5; i++) {
+        outFile << statList[i] << ": " << stats[i] << endl;
+    }
+    outFile << endl;
+    outFile.close();
+    cout << "Pokemon stats saved successfully!" << endl;
 }
